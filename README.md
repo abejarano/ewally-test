@@ -1,4 +1,4 @@
-### [Conheçe o Test practico](https://github.com/abejarano/ewally-test/blob/main/Teste-pratico.pdf)
+### [Conheçe o Test pratico](https://github.com/abejarano/ewally-test/blob/main/Teste-pratico.pdf)
 # Stack
 - [`node v16`](https://nodejs.org/) [`express`](https://expressjs.com/)
 - [`typescript`](https://www.typescriptlang.org/)

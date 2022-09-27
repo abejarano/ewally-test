@@ -2,5 +2,9 @@ import ExceptionDomain from "../Exception";
 
 export class InvalidCpf extends ExceptionDomain {
   name = "invalid_cpf";
-  message = "CPF inválido.";
+
+  constructor(cpf: string) {
+    super();
+    this.message = `CPF ${cpf} inválido.`;
+  }
 }

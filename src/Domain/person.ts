@@ -1,20 +1,25 @@
 import { CpfValidator } from "./cpf.validator";
+import { PersonType } from "./PersonType";
 
 export class Person {
   private readonly cpf;
-  private readonly friends: Person[];
+  private readonly friends: PersonType[];
 
-  constructor(private readonly name: string, cpf: string, friends?: Person[]) {
+  constructor(
+    private readonly name: string,
+    cpf: string,
+    friends?: PersonType[]
+  ) {
     this.cpf = new CpfValidator(cpf).getValue();
 
     this.friends = friends ?? [];
   }
 
-  static instance(name: string, cpf: string, friends?: Person[]) {
+  static instance(name: string, cpf: string, friends?: PersonType[]) {
     return new Person(name, cpf, friends);
   }
 
-  getFriends(): Person[] {
+  getFriends(): PersonType[] {
     return this.friends;
   }
 

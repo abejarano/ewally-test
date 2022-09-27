@@ -13,7 +13,7 @@ describe("Caso de Cadastrar Pessoas", () => {
       Person.instance("Jose", "70860822", []);
     } catch (e) {
       expect(e).toBeInstanceOf(InvalidCpf);
-      expect(e.getMessage()).toEqual("CPF inválido.");
+      expect(e.getMessage()).toEqual("CPF 70860822 inválido.");
     }
   });
 

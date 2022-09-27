@@ -3,6 +3,11 @@ import { createMock } from "ts-auto-mock";
 import { Repository } from "../../src/Domain/repository";
 import { Recommendations } from "../../src/applications/Recommendations";
 import { Person } from "../../src/Domain/person";
+import {
+  personWithFriends,
+  personWithFriendsOfJesus,
+  personWithFriendsOfMari,
+} from "../db.mock";
 
 describe("Caso de Recomenção", () => {
   const mockRepository = createMock<Repository>();
@@ -13,24 +18,43 @@ describe("Caso de Recomenção", () => {
 
       jest.spyOn(mockRepository, "findByCpf").mockResolvedValue(mockPerson);
 
-      jest.spyOn(mockRepository, "relatedToCpf").mockResolvedValue(undefined);
-
-      await Recommendations.instance(mockRepository).make("12323467843");
+      await Recommendations.instance(mockRepository).make(mockPerson.getCPF());
     } catch (e) {
       expect(e).toBeInstanceOf(RecommendationsNotFound);
     }
   });
 
   it("retorna recomendações", async () => {
-    const mockPerson = Person.instance("jesus", "12345675431");
+    const mockPersonWithFriends = Person.instance(
+      personWithFriends.name,
+      personWithFriends.cpf,
+      personWithFriends.friends
+    );
 
-    const mockFriends = [
-      Person.instance("angel", "12345675430"),
-      Person.instance("jose", "12345675439"),
+    const recommendedCpf = [
+      "012.233.212-19",
+      "612.239.212-19",
+      "224.563.212-22",
     ];
 
-    jest.spyOn(mockRepository, "findByCpf").mockResolvedValue(mockPerson);
+    jest
+      .spyOn(mockRepository, "findByCpf")
+      .mockResolvedValue(mockPersonWithFriends);
 
-    // const data = Recommendations.instance(mockRepository).make();
+    jest
+      .spyOn(mockRepository, "findFriendsByCpf")
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce(personWithFriendsOfJesus.friends)
+      .mockResolvedValueOnce(personWithFriendsOfMari.friends);
+
+    const recommendations = await Recommendations.instance(mockRepository).make(
+      mockPersonWithFriends.getCPF()
+    );
+
+    expect(recommendations.length).toEqual(3);
+
+    recommendations.forEach((e) => {
+      expect(recommendedCpf).toContain(e);
+    });
   });
 });

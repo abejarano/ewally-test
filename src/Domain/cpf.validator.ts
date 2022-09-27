@@ -7,7 +7,7 @@ export class CpfValidator {
     const cpfFormat = CpfValidator.format(cpf);
 
     if (!this.regex.test(cpfFormat)) {
-      throw new InvalidCpf();
+      throw new InvalidCpf(cpf);
     }
 
     this.cpf = cpfFormat;

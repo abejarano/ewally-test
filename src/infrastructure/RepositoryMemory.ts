@@ -2,6 +2,7 @@ import { Repository } from "../Domain/repository";
 import { db } from "../app";
 import { Person } from "../Domain/person";
 import { CpfValidator } from "../Domain/cpf.validator";
+import { PersonType } from "../Domain/PersonType";
 
 export class RepositoryMemory implements Repository {
   static instance() {
@@ -18,6 +19,18 @@ export class RepositoryMemory implements Repository {
     return Person.instance(person.name, person.cpf, person.friends);
   }
 
+  async findFriendsByCpf(cpf: string): Promise<PersonType[]> {
+    return db
+      .map((person) => {
+        if (person.cpf === cpf) {
+          return person.friends as PersonType;
+        }
+
+        return undefined;
+      })
+      .filter((friends) => friends !== undefined);
+  }
+
   async addPerson(person: Person): Promise<string> {
     db.push(person.toJson());
 
@@ -29,26 +42,29 @@ export class RepositoryMemory implements Repository {
     db = [];
   }
 
-  relatedToCpf(cpf: CpfValidator): Promise<Person[] | undefined> {
-    return Promise.resolve(undefined);
-  }
-
   async relationship(
     cpf: string,
     person: Person
   ): Promise<{ cpf: string; cpf_other: string }> {
-    return db.forEach((p: any, index: number) => {
+    const index = this.findIndexToPersoninDB(cpf);
+    const personJson = person.toJson();
+
+    delete personJson.friends;
+    db[index].friends.push(personJson);
+
+    return {
+      cpf: cpf,
+      cpf_other: person.getCPF(),
+    };
+  }
+
+  private findIndexToPersoninDB(cpf: string): number | undefined {
+    db.forEach((p, index) => {
       if (p.cpf === cpf) {
-        const personJson = person.toJson();
-        delete personJson.friends;
-
-        db[index].friends.push(personJson);
-
-        return {
-          cpf: cpf,
-          cpf_other: person.getCPF(),
-        };
+        return index;
       }
     });
+
+    return undefined;
   }
 }

@@ -9,6 +9,8 @@ if (process.env.NODE_ENV === "dev") {
   dotenv.config({
     path: process.env.PWD + "/.env.dev",
   });
+} else {
+  dotenv.config()
 }
 
 const app = server();

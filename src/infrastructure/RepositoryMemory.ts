@@ -18,7 +18,7 @@ export class RepositoryMemory implements Repository {
     return Person.instance(person.name, person.cpf, person.friends);
   }
 
-  addPerson(person: Person): Promise<string> {
+  async addPerson(person: Person): Promise<string> {
     db.push(person.toJson());
 
     return person.getCPF();

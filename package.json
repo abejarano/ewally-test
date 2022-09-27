@@ -1,0 +1,85 @@
+{
+  "name": "ewally-test",
+  "version": "0.0.1",
+  "description": "Teste ewally",
+  "main": "index.js",
+  "scripts": {
+    "dev": "NODE_ENV=dev nodemon src/app.ts",
+    "start:prod": "NODE_ENV=prod node dist/app.js",
+    "build": "tsc -p tsconfig.build.json",
+    "format": "prettier --write \"src/**/*.ts\" ",
+    "test": "jest --detectOpenHandles --coverage --runInBand"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abejarano/ewally-test.git"
+  },
+  "keywords": [
+    "Tech",
+    "Test",
+    "ewally"
+  ],
+  "author": "angel bejarano / programador.angel@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abejarano/ewally-test/issues"
+  },
+  "homepage": "https://github.com/abejarano/ewally-test#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.2",
+    "@types/express": "^4.17.13",
+    "@types/jest": "^27.0.3",
+    "jest": "^27.4.5",
+    "jest-junit": "^13.0.0",
+    "jest-ts-auto-mock": "^2.0.0",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.1",
+    "ts-jest": "^27.1.1",
+    "ts-node": "^10.4.0",
+    "ttypescript": "^1.5.13",
+    "typescript": "^4.5.4"
+  },
+  "jest": {
+    "setupFiles": [
+      "./test/jest/config.ts"
+    ],
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "^src/(.*)": "<rootDir>/$1",
+      "^test/(.*)": "<rootDir>/../test/$1"
+    },
+    "testRegex": ".spec.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "coverageReporters": [
+      "text",
+      "cobertura"
+    ],
+    "reporters": [
+      "default",
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "coverage"
+        }
+      ]
+    ],
+    "globals": {
+      "ts-jest": {
+        "compiler": "ttypescript"
+      }
+    }
+  }
+}
